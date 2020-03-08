@@ -17,7 +17,7 @@ class PostService
         $post = Post::create($data);
 
         if(!$post->is_published){
-            $post->unsearchable();
+            // $post->unsearchable();
         }
 
         Cache::forever('post.' . $post->id, $post);
@@ -34,7 +34,7 @@ class PostService
         $post->update($data);
 
         if(!$post->is_published){
-            $post->unsearchable();
+            // $post->unsearchable();
         }
 
         Cache::forever('post.' . $post->id, $post);

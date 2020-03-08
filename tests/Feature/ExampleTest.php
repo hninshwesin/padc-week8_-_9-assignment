@@ -2,20 +2,36 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ExampleTest extends TestCase
 {
+    use WithoutMiddleware,DatabaseTransactions;
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function testBasicTest()
-    {
-        $response = $this->get('/');
 
-        $response->assertStatus(200);
+    // public function testBasicTest(){
+    //     $this->assertTrue(true);
+    // }
+
+    public function testRegistrationFormTest()
+    {
+        $post_data = [
+            'name' => 'PADC',
+            'email' => 'padc@gmail.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ];
+        $response = $this->json('POST', '/register', $post_data);
+        $response->assertStatus(201);
+
+        $this->assertDatabaseHas('users',[
+            'email' => 'padc@gmail.com'
+        ]);
     }
 }
