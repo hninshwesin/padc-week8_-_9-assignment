@@ -4,12 +4,34 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 // use Laravel\Scout\Searchable;
+use ScoutElastic\Searchable;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class Post extends Model
 {
 
-    // use Searchable;
+     use Searchable;
+
+    protected $indexConfigurator = PostIndexConfigurator::class;
+    protected $searchRules = [
+        //
+    ];
+    // Here you can specify a mapping for model fields
+    protected $mapping = [
+        'properties' => [
+            'title' => [
+                'type' => 'text',
+                // Also you can configure multi-fields, more details you can find here https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html
+                'fields' => [
+                    'raw' => [
+                        'type' => 'keyword',
+                    ]
+                ]
+            ],
+        ]
+    ];
+
+
     protected $fillable = ['title', 'content', 'is_published', 'author_id','category_id'];
 
     protected $casts = [
